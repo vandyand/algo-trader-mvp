@@ -6,41 +6,60 @@ const env = require("dotenv").config();
 
 const url = "https://api-fxpractice.oanda.com/v3/accounts";
 const account = "101-001-5729740-002";
-
-const getAccountIds = async () => {
-  try {
-    return await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
-      },
-    });
-  } catch (error) {
-    console.error(error);
-  }
+const headers = {
+  Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
+  "Content-Type": "application/json",
 };
 
-const getAccountSummary = async () => {
-  try {
-    return await axios.get(
-      `${url}/${account}/summary`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
-        },
-      }
-    );
-  } catch (error) {
-    console.error(error);
-  }
+const getAccountIds = () => {
+  axios
+    .get(url, { headers })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
 };
 
-const callOandaFunc = async (Func, ...args) => {
-    const res = await Func(...args);
-    
-    console.log(res.data);
+const getAccountSummary = () => {
+  axios
+    .get(`${url}/${account}/summary`, {
+      headers,
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
 };
 
+const executeOrder = () => {
+  const body = {
+    order: {
+      units: "-250",
+      instrument: "EUR_USD",
+      timeInForce: "FOK",
+      type: "MARKET",
+      positionFill: "DEFAULT",
+    },
+  };
+  axios({
+    method: "post",
+    url: `${url}/${account}/orders`,
+    headers,
+    data: body,
+  })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
+};
 
-callOandaFunc(getAccountSummary, account_id);
+const getPositions = () => {
+  axios
+    .get(`${url}/${account}/positions`, {
+      headers,
+    })
+    .then((res) => console.log(res.data.positions))
+    .catch((err) => console.log(err));
+};
 
-// callOandaFunc(ExecuteOrder, )
+// getAccountIds();
+
+// getAccountSummary();
+
+// executeOrder();
+
+getPositions();
