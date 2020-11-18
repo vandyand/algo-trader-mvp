@@ -4,9 +4,12 @@ const env = require("dotenv").config();
 // console.log(process.env.OANDA_API_KEY)
 // console.log(process.env.TEST_KEY)
 
+const url = "https://api-fxpractice.oanda.com/v3/accounts";
+const account = "101-001-5729740-002";
+
 const getAccountIds = async () => {
   try {
-    return await axios.get("https://api-fxpractice.oanda.com/v3/accounts", {
+    return await axios.get(url, {
       headers: {
         Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
       },
@@ -16,10 +19,10 @@ const getAccountIds = async () => {
   }
 };
 
-const getAccountSummary = async (account_id) => {
+const getAccountSummary = async () => {
   try {
     return await axios.get(
-      `https://api-fxpractice.oanda.com/v3/accounts/${account_id}/summary`,
+      `${url}/${account}/summary`,
       {
         headers: {
           Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
@@ -31,19 +34,12 @@ const getAccountSummary = async (account_id) => {
   }
 };
 
-// const executeOrder = async (orderDetails) => {
-//     try {
-//         return await axios.post()
-//     }
-// }
-
 const callOandaFunc = async (Func, ...args) => {
     const res = await Func(...args);
     
     console.log(res.data);
 };
 
-const account_id = "101-001-5729740-002";
 
 callOandaFunc(getAccountSummary, account_id);
 
