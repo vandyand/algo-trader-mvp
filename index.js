@@ -1,11 +1,11 @@
 const axios = require("axios");
 const env = require("dotenv").config();
 
-// console.log(process.env.OANDA_API_KEY)
-// console.log(process.env.TEST_KEY)
+const clArgs = process.argv.slice(2);
+let func = clArgs.length > 0 ? clArgs[0] : "getAccountIds";
+let account = clArgs.length > 1 ? clArgs[1] : "101-001-5729740-002";
 
 const url = "https://api-fxpractice.oanda.com/v3/accounts";
-const account = "101-001-5729740-002";
 const headers = {
   Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
   "Content-Type": "application/json",
@@ -56,10 +56,16 @@ const getPositions = () => {
     .catch((err) => console.log(err));
 };
 
-// getAccountIds();
-
-// getAccountSummary();
-
-// executeOrder();
-
-getPositions();
+switch (func) {
+  case "getAccountSummary":
+    getAccountSummary();
+    break;
+  case "executeOrder":
+    executeOrder();
+    break;
+  case "getPositions":
+    getPositions();
+    break;
+  default:
+    getAccountIds();
+}
