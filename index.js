@@ -3,7 +3,19 @@ const env = require("dotenv").config();
 
 const clArgs = process.argv.slice(2);
 let func = clArgs.length > 0 ? clArgs[0] : "getAccountIds";
-let account = clArgs.length > 1 ? clArgs[1] : "101-001-5729740-002";
+let account = "101-001-5729740-010";
+let units = "0";
+
+if(clArgs.length > 1){
+    if(clArgs[1].length == 19){
+        account = clArgs[1];
+    } else {
+        units = clArgs[1];
+    }
+}
+if(clArgs.length > 2 && units == "0"){
+    units = clArgs[2];
+}
 
 const url = "https://api-fxpractice.oanda.com/v3/accounts";
 const headers = {
@@ -30,7 +42,7 @@ const getAccountSummary = () => {
 const executeOrder = () => {
   const body = {
     order: {
-      units: "-250",
+      units,
       instrument: "EUR_USD",
       timeInForce: "FOK",
       type: "MARKET",
