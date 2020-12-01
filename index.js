@@ -1,5 +1,14 @@
+#!/usr/bin/env node
 const axios = require("axios");
 const env = require("dotenv").config();
+// var argv = require('yargs/yargs')(process.argv.slice(2))
+//     .usage('Usage: $0 -w [num] -h [num]')
+//     .demandOption(['w','h'])
+//     .argv;
+
+// console.log("The area is:", argv.w * argv.h);
+
+
 
 const clArgs = process.argv.slice(2);
 let func = clArgs.length > 0 ? clArgs[0] : "getAccountIds";
@@ -60,13 +69,33 @@ const executeOrder = (
     data: body,
   })
     .then((res) => {
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     })
     .catch((err) => console.log(err));
 };
 
-const addTPSLOrder = ()
+const executeTPSLOrder = (
+  tp = {
+    order: {
+      type: "TAKE_PROFIT",
+      tradeID: "",
+      price: "",
+    },
+  },
+  sl = {
+    order: {
+      type: "STOP_LOSS",
+      tradeID: "",
+      price: "",
+    },
+  }
+) => {
+  const orderRes = executeOrder()
+
+  console.log("########### execute orderRes:",orderRes,"##############")
+  
+};
 
 const getPositions = () => {
   return axios
@@ -99,19 +128,41 @@ const closeAllPositions = () => {
   });
 };
 
-switch (func) {
-  case "getAccountSummary":
-    getAccountSummary();
-    break;
-  case "executeOrder":
-    executeOrder();
-    break;
-  case "getPositions":
-    getPositions();
-    break;
-  case "closeAllPositions":
-    closeAllPositions();
-    break;
-  default:
-    getAccountIds();
+funcs = {
+  "getAccountSummary":
+    () => getAccountSummary(),
+  "executeOrder":
+    () => executeOrder(),
+  "getPositions":
+    () => getPositions(),
+  "closeAllPositions":
+    () => closeAllPositions(),
+  "executeTPSLOrder":
+    () => executeTPSLOrder(),
+  "getAccountIds":
+    () => getAccountIds(),
 }
+
+console.log(funcs['test'])
+
+funcs[func]();
+
+// switch (func) {
+//   case "getAccountSummary":
+//     getAccountSummary();
+//     break;
+//   case "executeOrder":
+//     executeOrder();
+//     break;
+//   case "getPositions":
+//     getPositions();
+//     break;
+//   case "closeAllPositions":
+//     closeAllPositions();
+//     break;
+//   case "executeTPSLOrder":
+//     executeTPSLOrder();
+//     break;
+//   default:
+//     getAccountIds();
+// }

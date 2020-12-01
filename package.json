@@ -19,6 +19,7 @@
   "homepage": "https://github.com/vandyand/algo-trader-mvp#readme",
   "dependencies": {
     "axios": "^0.21.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "yargs": "^16.1.1"
   }
 }
