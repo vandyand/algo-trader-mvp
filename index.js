@@ -8,8 +8,6 @@ const env = require("dotenv").config();
 
 // console.log("The area is:", argv.w * argv.h);
 
-
-
 const clArgs = process.argv.slice(2);
 let func = clArgs.length > 0 ? clArgs[0] : "getAccountIds";
 // let account = "101-001-5729740-010";
@@ -91,10 +89,9 @@ const executeTPSLOrder = (
     },
   }
 ) => {
-  const orderRes = executeOrder()
+  const orderRes = executeOrder();
 
-  console.log("########### execute orderRes:",orderRes,"##############")
-  
+  console.log("########### execute orderRes:", orderRes, "##############");
 };
 
 const getPositions = () => {
@@ -129,21 +126,13 @@ const closeAllPositions = () => {
 };
 
 funcs = {
-  "getAccountSummary":
-    () => getAccountSummary(),
-  "executeOrder":
-    () => executeOrder(),
-  "getPositions":
-    () => getPositions(),
-  "closeAllPositions":
-    () => closeAllPositions(),
-  "executeTPSLOrder":
-    () => executeTPSLOrder(),
-  "getAccountIds":
-    () => getAccountIds(),
-}
-
-console.log(funcs['test'])
+  getAccountSummary,
+  executeOrder,
+  getPositions,
+  closeAllPositions,
+  executeTPSLOrder,
+  getAccountIds,
+};
 
 funcs[func]();
 
