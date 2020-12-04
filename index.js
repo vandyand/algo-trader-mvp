@@ -1,30 +1,26 @@
 #!/usr/bin/env node
-const axios = require("axios");
-const env = require("dotenv").config();
+import axios from "axios";
+import dotenv from "dotenv";
+import yargs from "yargs";
+import {getDefaultAccountId, updateDefaultAccountId} from "./db.js";
+
+
 // var argv = require('yargs/yargs')(process.argv.slice(2))
-//     .usage('Usage: $0 -w [num] -h [num]')
-//     .demandOption(['w','h'])
-//     .argv;
+var argv = yargs(process.argv.slice(2))
+.usage('Usage: $0 -f [func] -a [str] -u [num] -r [num]')
+.alias("f","function")
+.alias("a","account-id")
+.alias("u","units")
+.alias("r","range")
+.demandOption(['f'])
+.argv;
 
-// console.log("The area is:", argv.w * argv.h);
+const func = argv.f;
+const accountId = argv.a || getDefaultAccountId();
+const units = Number(argv.u) || 0;
+const range = Number(argv.r) || 0;
 
-const clArgs = process.argv.slice(2);
-let func = clArgs.length > 0 ? clArgs[0] : "getAccountIds";
-// let account = "101-001-5729740-010";
-let account = "101-001-5729740-002";
-let units = "0";
-
-if (clArgs.length > 1) {
-  if (clArgs[1].length == 19) {
-    account = clArgs[1];
-  } else {
-    units = clArgs[1];
-  }
-}
-if (clArgs.length > 2 && units == "0") {
-  units = clArgs[2];
-}
-
+const env = dotenv.config();
 const url = "https://api-fxpractice.oanda.com/v3/accounts";
 const headers = {
   Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
@@ -40,7 +36,7 @@ const getAccountIds = () => {
 
 const getAccountSummary = () => {
   axios
-    .get(`${url}/${account}/summary`, {
+    .get(`${url}/${accountId}/summary`, {
       headers,
     })
     .then((res) => console.log(res.data))
@@ -60,9 +56,9 @@ const executeOrder = (
     },
   }
 ) => {
-  axios({
+  return axios({
     method: "post",
-    url: `${url}/${account}/orders`,
+    url: `${url}/${accountId}/orders`,
     headers,
     data: body,
   })
@@ -89,14 +85,27 @@ const executeTPSLOrder = (
     },
   }
 ) => {
-  const orderRes = executeOrder();
-
-  console.log("########### execute orderRes:", orderRes, "##############");
+  executeOrder()
+  .then((res) =>{
+    // console.log("########### execute res:", res.lastTransactionID, "##############")
+    const tradeID = res.lastTransactionID;
+    const price = Number(res.orderFillTransaction.price)
+    if (Number(res.orderFillTransaction.units) >= 0) {
+      tp.order.price = price + range;
+      sl.order.price = price - range;
+    } else {
+      tp.order.price = price - range;
+      sl.order.price = price + range;
+    }
+    tp.order.tradeID = sl.order.tradeID = tradeID;
+    executeOrder(tp)
+    executeOrder(sl)
+  })
 };
 
 const getPositions = () => {
   return axios
-    .get(`${url}/${account}/openPositions`, {
+    .get(`${url}/${accountId}/openPositions`, {
       headers,
     })
     .then((res) => {
@@ -125,33 +134,26 @@ const closeAllPositions = () => {
   });
 };
 
-funcs = {
+const getOrders = () => {
+  axios
+    .get(`${url}/${accountId}/orders`, {
+      headers,
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
+
+}
+
+const funcs = {
+  getAccountIds,
   getAccountSummary,
   executeOrder,
   getPositions,
+  getOrders,
   closeAllPositions,
   executeTPSLOrder,
-  getAccountIds,
+  getDefaultAccountId: () => console.log(getDefaultAccountId()),
+  updateDefaultAccountId: () => updateDefaultAccountId(accountId),
 };
 
 funcs[func]();
-
-// switch (func) {
-//   case "getAccountSummary":
-//     getAccountSummary();
-//     break;
-//   case "executeOrder":
-//     executeOrder();
-//     break;
-//   case "getPositions":
-//     getPositions();
-//     break;
-//   case "closeAllPositions":
-//     closeAllPositions();
-//     break;
-//   case "executeTPSLOrder":
-//     executeTPSLOrder();
-//     break;
-//   default:
-//     getAccountIds();
-// }
