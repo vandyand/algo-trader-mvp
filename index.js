@@ -2,21 +2,24 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import yargs from "yargs";
-import {getDefaultAccountId, updateDefaultAccountId} from "./db.js";
+import { getDefaultAccountId, updateDefaultAccountId, getOrders } from "./db.js";
+import { executeOrder, executeOrders, executeTPSLOrder} from "./orders.js";
 
 
 // var argv = require('yargs/yargs')(process.argv.slice(2))
 var argv = yargs(process.argv.slice(2))
-.usage('Usage: $0 -f [func] -a [str] -u [num] -r [num]')
-.alias("f","function")
-.alias("a","account-id")
-.alias("u","units")
-.alias("r","range")
-.demandOption(['f'])
-.argv;
+  .usage('Usage: $0 -f [func] -a [str] -i [str] -u [num] -r [num]')
+  .alias("f", "function")
+  .alias("a", "account-id")
+  .alias("i", "instrument")
+  .alias("u", "units")
+  .alias("r", "range")
+  .demandOption(['f'])
+  .argv;
 
 const func = argv.f;
 const accountId = argv.a || getDefaultAccountId();
+const instrument = argv.i || 'EUR_USD';
 const units = Number(argv.u) || 0;
 const range = Number(argv.r) || 0;
 
@@ -41,66 +44,6 @@ const getAccountSummary = () => {
     })
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err));
-};
-
-const executeOrder = (
-  body = {
-    order: {
-      units,
-      instrument: "EUR_USD",
-      // instrument: "USD_CAD",
-      // instrument: "GBP_USD",
-      timeInForce: "FOK",
-      type: "MARKET",
-      positionFill: "DEFAULT",
-    },
-  }
-) => {
-  return axios({
-    method: "post",
-    url: `${url}/${accountId}/orders`,
-    headers,
-    data: body,
-  })
-    .then((res) => {
-      console.log(res.data);
-      return res.data;
-    })
-    .catch((err) => console.log(err));
-};
-
-const executeTPSLOrder = (
-  tp = {
-    order: {
-      type: "TAKE_PROFIT",
-      tradeID: "",
-      price: "",
-    },
-  },
-  sl = {
-    order: {
-      type: "STOP_LOSS",
-      tradeID: "",
-      price: "",
-    },
-  }
-) => {
-  executeOrder()
-  .then((res) =>{
-    // console.log("########### execute res:", res.lastTransactionID, "##############")
-    const tradeID = res.lastTransactionID;
-    const price = Number(res.orderFillTransaction.price)
-    if (Number(res.orderFillTransaction.units) >= 0) {
-      tp.order.price = price + range;
-      sl.order.price = price - range;
-    } else {
-      tp.order.price = price - range;
-      sl.order.price = price + range;
-    }
-    tp.order.tradeID = sl.order.tradeID = tradeID;
-    executeOrder(tp)
-    executeOrder(sl)
-  })
 };
 
 const getPositions = () => {
@@ -148,6 +91,7 @@ const funcs = {
   getAccountIds,
   getAccountSummary,
   executeOrder,
+  executeOrders,
   getPositions,
   getOrders,
   closeAllPositions,

@@ -1,1 +1,36 @@
-{"test":"this","default-account-id":"101-001-5729740-011"}
+{
+  "test": "this",
+  "defaultAccountId": "101-001-5729740-011",
+  "orders": [
+    {
+        "instrument":"EUR_USD",
+        "units":-2015,
+        "range": 0.00297
+    },
+    {
+        "instrument":"AUD_USD",
+        "units":840,
+        "range": 0.0044
+    },
+    {
+        "instrument":"GBP_USD",
+        "units":2218,
+        "range": 0.003
+    },
+    {
+        "instrument":"USD_CHF",
+        "units":413,
+        "range": 0.01096
+    },
+    {
+        "instrument":"USD_CAD",
+        "units":-3438,
+        "range": 0.00189
+    },
+    {
+        "instrument":"USD_JPY",
+        "units":-3142,
+        "range": 0.166
+    }
+  ]
+}
