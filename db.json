@@ -1,7 +1,7 @@
 {
   "test": "this",
   "defaultAccountId": "101-001-5729740-011",
-  "orders": [
+  "ordersToExecute": [
     {
         "instrument":"EUR_USD",
         "units":-2015,

@@ -22,6 +22,6 @@ export const updateDefaultAccountId = (newAccountId) => {
     console.log("new default account id:", newAccountId);
 };
 
-export const getOrders = () => {
-    return getDB()["orders"];
+export const getOrdersToExecute = () => {
+    return getDB()["ordersToExecute"];
 };

@@ -2,8 +2,8 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import yargs from "yargs";
-import { getDefaultAccountId, updateDefaultAccountId, getOrders } from "./db.js";
-import { executeOrder, executeOrders, executeTPSLOrder} from "./orders.js";
+import { getDefaultAccountId, updateDefaultAccountId } from "./db.js";
+import { executeOrder, executeDBOrders} from "./orders.js";
 
 
 // var argv = require('yargs/yargs')(process.argv.slice(2))
@@ -77,25 +77,32 @@ const closeAllPositions = () => {
   });
 };
 
-const getOrders = () => {
+const getOandaOrders = () => {
   axios
     .get(`${url}/${accountId}/orders`, {
       headers,
     })
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err));
+}
 
+const getOandaTrades = () => {
+  axios
+    .get(`${url}/${accountId}/trades`, {
+      headers,
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
 }
 
 const funcs = {
   getAccountIds,
   getAccountSummary,
-  executeOrder,
-  executeOrders,
+  executeDBOrders,
   getPositions,
-  getOrders,
+  getOandaOrders,
+  getOandaTrades,
   closeAllPositions,
-  executeTPSLOrder,
   getDefaultAccountId: () => console.log(getDefaultAccountId()),
   updateDefaultAccountId: () => updateDefaultAccountId(accountId),
 };
