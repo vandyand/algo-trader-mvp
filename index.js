@@ -1,16 +1,13 @@
 #!/usr/bin/env node
 import axios from "axios";
 import yargs from "yargs";
-import { getDefaultAccountId, updateDefaultAccountId, getBaseUrl } from "./db.js";
+import { getDefaultAccountId, updateDefaultAccountId, getBaseUrl, getHeaders } from "./db.js";
 import { executeOrder, executeDBOrders } from "./orders.js";
 
 var argv = yargs(process.argv.slice(2))
   .usage('Usage: $0 -f [func] -a [str] -i [str] -u [num] -r [num]')
   .alias("f", "function")
   .alias("a", "account-id")
-  // .alias("i", "instrument")
-  // .alias("u", "units")
-  // .alias("r", "range")
   .demandOption(['f'])
   .argv;
 

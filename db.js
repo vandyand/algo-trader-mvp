@@ -1,4 +1,6 @@
 import * as fs from "fs";
+import dotenv from "dotenv";
+const env = dotenv.config();
 
 const getDB = () => {
     return JSON.parse(fs.readFileSync("db.json"));
