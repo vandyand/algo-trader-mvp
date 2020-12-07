@@ -20,11 +20,11 @@
         {
             "instrument": "USD_CHF",
             "units": 1480,
-            "range": 0.0062
+            "range": 0.0063
         },
         {
             "instrument": "USD_CAD",
-            "units": -1104,
+            "units": 1104,
             "range": 0.0088
         },
         {
