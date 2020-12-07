@@ -25,3 +25,14 @@ export const updateDefaultAccountId = (newAccountId) => {
 export const getOrdersToExecute = () => {
     return getDB()["ordersToExecute"];
 };
+
+export const getBaseUrl = () => {
+    return getDB()["baseUrl"]
+}
+
+export const getHeaders = () => {
+    return {
+        Authorization: `Bearer ${process.env.OANDA_API_KEY}`,
+        "Content-Type": "application/json",
+    }
+}

@@ -1,5 +1,5 @@
 {
-    "test": "this",
+    "baseUrl":"https://api-fxpractice.oanda.com/v3/accounts",
     "defaultAccountId": "101-001-5729740-017",
     "ordersToExecute": [
         {
