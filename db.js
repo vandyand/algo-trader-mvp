@@ -2,34 +2,34 @@ import * as fs from "fs";
 import dotenv from "dotenv";
 const env = dotenv.config();
 
-const getDB = () => {
+const getDb = () => {
     return JSON.parse(fs.readFileSync("db.json"));
 };
 
-const updateDB = (db) => {
+const updateDb = (db) => {
     fs.writeFileSync("db.json", JSON.stringify(db));
 };
 
 export const getDefaultAccountId = () => {
-    return getDB()["defaultAccountId"];
+    return getDb()["defaultAccountId"];
 };
 
 export const updateDefaultAccountId = (newAccountId) => {
     if (!newAccountId) {
         return;
     }
-    const db = getDB();
+    const db = getDb();
     db["defaultAccountId"] = newAccountId;
-    updateDB(db);
+    updateDb(db);
     console.log("new default account id:", newAccountId);
 };
 
 export const getOrdersToExecute = () => {
-    return getDB()["ordersToExecute"];
+    return getDb()["ordersToExecute"];
 };
 
 export const getBaseUrl = () => {
-    return getDB()["baseUrl"]
+    return getDb()["baseUrl"]
 }
 
 export const getHeaders = () => {
