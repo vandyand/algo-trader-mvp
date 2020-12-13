@@ -4,33 +4,77 @@
     "ordersToExecute": [
         {
             "instrument": "EUR_USD",
-            "units": -1352,
+            "units": 73,
             "range": 0.0082
         },
         {
             "instrument": "AUD_USD",
-            "units": -925,
+            "units": -1289,
             "range": 0.0074
         },
         {
             "instrument": "GBP_USD",
-            "units": -358,
+            "units": -37,
             "range": 0.0153
         },
         {
             "instrument": "USD_CHF",
-            "units": 1480,
+            "units": 2316,
             "range": 0.0063
         },
         {
             "instrument": "USD_CAD",
-            "units": 1104,
+            "units": 640,
             "range": 0.0088
         },
         {
             "instrument": "USD_JPY",
-            "units": -993,
+            "units": 324,
             "range": 0.64
+        },
+        {
+            "instrument": "NZD_USD",
+            "units": -235,
+            "range": 0.0075
+        },
+        {
+            "instrument": "EUR_JPY",
+            "units": 62,
+            "range": 1.25
+        },
+        {
+            "instrument": "GBP_JPY",
+            "units": -369,
+            "range": 1.65
+        },
+        {
+            "instrument": "EUR_GBP",
+            "units": -205,
+            "range": 0.0083
+        },
+        {
+            "instrument": "AUD_JPY",
+            "units": 104,
+            "range": 0.95
+        },
+        {
+            "instrument": "EUR_AUD",
+            "units": -203,
+            "range": 0.0132
         }
     ]
 }
+
+Range (via vol 75%)	Units	Currency Pair
+0.0082	73	EURUSD
+0.0074	-1,289	AUDUSD
+0.0153	-37	GBPUSD
+0.00625	2,316	USDCHF
+0.0088	640	USDCAD
+0.0064	324	USDJPY*
+0.0075	-235	NZDUSD
+0.0125	62	EURJPY*
+0.0165	-369	GBPJPY*
+0.0083	-205	EURGBP
+0.0095	104	AUDJPY*
+0.0132	-203	EURAUD
