@@ -4,63 +4,18 @@
     "ordersToExecute": [
         {
             "instrument": "EUR_USD",
-            "units": 73,
+            "units": 3893,
             "range": 0.0082
         },
         {
-            "instrument": "AUD_USD",
-            "units": -1289,
-            "range": 0.0074
-        },
-        {
-            "instrument": "GBP_USD",
-            "units": -37,
-            "range": 0.0153
-        },
-        {
-            "instrument": "USD_CHF",
-            "units": 2316,
-            "range": 0.0063
-        },
-        {
-            "instrument": "USD_CAD",
-            "units": 640,
-            "range": 0.0088
-        },
-        {
             "instrument": "USD_JPY",
-            "units": 324,
+            "units": -1576,
             "range": 0.64
         },
         {
-            "instrument": "NZD_USD",
-            "units": -235,
-            "range": 0.0075
-        },
-        {
             "instrument": "EUR_JPY",
-            "units": 62,
+            "units": -309,
             "range": 1.25
-        },
-        {
-            "instrument": "GBP_JPY",
-            "units": -369,
-            "range": 1.65
-        },
-        {
-            "instrument": "EUR_GBP",
-            "units": -205,
-            "range": 0.0083
-        },
-        {
-            "instrument": "AUD_JPY",
-            "units": 104,
-            "range": 0.95
-        },
-        {
-            "instrument": "EUR_AUD",
-            "units": -203,
-            "range": 0.0132
         }
     ]
 }
