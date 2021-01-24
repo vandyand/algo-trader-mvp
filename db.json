@@ -1,21 +1,83 @@
 {
     "baseUrl":"https://api-fxpractice.oanda.com/v3/accounts",
     "defaultAccountId": "101-001-5729740-017",
-    "ordersToExecute": [
+    "trackingSystem": [
         {
             "instrument": "EUR_USD",
-            "units": 3893,
-            "range": 0.0082
+            "targetPrice": 1.2100,
+            "trackingDistance":0.005
+        },
+        {
+            "instrument": "AUD_USD",
+            "targetPrice": 1.2100,
+            "trackingDistance":0.005
+        },
+        {
+            "instrument": "GBP_USD",
+            "targetPrice": 1.2100,
+            "trackingDistance":0.005
         },
         {
             "instrument": "USD_JPY",
-            "units": -1576,
-            "range": 0.64
+            "targetPrice": 1.2100,
+            "trackingDistance":0.005
+        }
+    ],
+    "ordersToExecute": [
+        {
+            "instrument": "EUR_USD",
+            "units": -4200,
+            "range": 0.0009
         },
         {
-            "instrument": "EUR_JPY",
-            "units": -309,
-            "range": 1.25
+            "instrument": "AUD_USD",
+            "units": -758,
+            "range": 0.0047
+        },
+        {
+            "instrument": "GBP_USD",
+            "units": -308,
+            "range": 0.0116
+        },
+        {
+            "instrument": "USD_JPY",
+            "units": 4857,
+            "range": 0.076
+        },
+        {
+            "instrument": "USD_CHF",
+            "units": -1159,
+            "range": 0.0027
+        },
+        {
+            "instrument": "USD_CAD",
+            "units": 1278,
+            "range": 0.0036
+        },
+        {
+            "instrument": "NZD_USD",
+            "units": -7960,
+            "range": 0.0004
+        },
+        {
+            "instrument": "GBP_JPY",
+            "units": -690,
+            "range": 0.54
+        },
+        {
+            "instrument": "EUR_GBP",
+            "units": -1791,
+            "range": 0.0015
+        },
+        {
+            "instrument": "AUD_JPY",
+            "units": -469,
+            "range": 0.79
+        },
+        {
+            "instrument": "EUR_AUD",
+            "units": -3153,
+            "range": 0.0015
         }
     ]
 }

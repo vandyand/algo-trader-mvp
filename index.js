@@ -1,18 +1,25 @@
 #!/usr/bin/env node
 import axios from "axios";
 import yargs from "yargs";
-import { getDefaultAccountId, updateDefaultAccountId, getBaseUrl, getHeaders } from "./db.js";
+import {
+  getDefaultAccountId,
+  updateDefaultAccountId,
+  getBaseUrl,
+  getHeaders,
+} from "./db.js";
 import { executeOrder, executeDBOrders } from "./orders.js";
 
 var argv = yargs(process.argv.slice(2))
-  .usage('Usage: $0 -f [func] -a [str] -i [str] -u [num] -r [num]')
+  .usage("Usage: $0 -f [func] -a [str] -i [str] -u [num]")
   .alias("f", "function")
   .alias("a", "account-id")
-  .demandOption(['f'])
-  .argv;
+  .alias("i", "instruments")
+  .alias("u", "units")
+  .demandOption(["f"]).argv;
 
 const func = argv.f;
 const accountId = argv.a || getDefaultAccountId();
+const instruments = argv.i || null;
 
 const url = getBaseUrl();
 const headers = getHeaders();
@@ -71,7 +78,7 @@ const getOandaOrders = () => {
     })
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err));
-}
+};
 
 const getOandaTrades = () => {
   axios
@@ -80,17 +87,27 @@ const getOandaTrades = () => {
     })
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err));
-}
+};
+
+const getPrice = (instruments) => {
+  axios
+    .get(`${url}/${accountId}/pricing?instruments=${instruments}`, {
+      headers,
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err));
+};
 
 const funcs = {
+  closeAllPositions,
+  executeDBOrders,
   getAccountIds,
   getAccountSummary,
-  executeDBOrders,
-  getPositions,
+  getDefaultAccountId: () => console.log(getDefaultAccountId()),
   getOandaOrders,
   getOandaTrades,
-  closeAllPositions,
-  getDefaultAccountId: () => console.log(getDefaultAccountId()),
+  getPositions,
+  getPrice: () => getPrice(instruments),
   updateDefaultAccountId: () => updateDefaultAccountId(accountId),
 };
 
