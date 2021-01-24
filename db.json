@@ -1,7 +1,7 @@
 {
     "baseUrl":"https://api-fxpractice.oanda.com/v3/accounts",
     "defaultAccountId": "101-001-5729740-017",
-    "trackingSystem": [
+    "targetPrices": [
         {
             "instrument": "EUR_USD",
             "targetPrice": 1.2100,
@@ -9,18 +9,8 @@
         },
         {
             "instrument": "AUD_USD",
-            "targetPrice": 1.2100,
-            "trackingDistance":0.005
-        },
-        {
-            "instrument": "GBP_USD",
-            "targetPrice": 1.2100,
-            "trackingDistance":0.005
-        },
-        {
-            "instrument": "USD_JPY",
-            "targetPrice": 1.2100,
-            "trackingDistance":0.005
+            "targetPrice": 0.71,
+            "trackingDistance":0.01
         }
     ],
     "ordersToExecute": [

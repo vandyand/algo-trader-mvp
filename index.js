@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 import axios from "axios";
 import yargs from "yargs";
+import _ from "lodash";
 import {
   getDefaultAccountId,
   updateDefaultAccountId,
   getBaseUrl,
   getHeaders,
+  getTargetPricesFromDb,
 } from "./db.js";
-import { executeOrder, executeDBOrders } from "./orders.js";
+import {
+  createMarketOrderObj,
+  executeOrder,
+  executeDBOrders,
+} from "./orders.js";
 
 var argv = yargs(process.argv.slice(2))
   .usage("Usage: $0 -f [func] -a [str] -i [str] -u [num]")
@@ -46,7 +52,7 @@ const getPositions = () => {
       headers,
     })
     .then((res) => {
-      console.log(res.data.positions);
+      // console.log(res.data.positions);
       return res.data.positions;
     })
     .catch((err) => console.log(err));
@@ -89,12 +95,62 @@ const getOandaTrades = () => {
     .catch((err) => console.log(err));
 };
 
-const getPrice = (instruments) => {
-  axios
+const getPrices = (instruments) => {
+  return axios
     .get(`${url}/${accountId}/pricing?instruments=${instruments}`, {
       headers,
     })
-    .then((res) => console.log(res.data))
+    .then((res) => {
+      console.log(res.data);
+      return res.data.prices;
+    })
+    .catch((err) => console.log(err));
+};
+
+const trackingSystem = (instruments) => {
+  const targetPrices = getTargetPricesFromDb();
+  getPrices(instruments)
+    .then((prices) => {
+      getPositions()
+        .then((positions) => {
+          const mergedPrices = prices
+            .map((priceObj) =>
+              _.assignIn(
+                priceObj,
+                targetPrices.find(
+                  (targetPrice) =>
+                    priceObj.instrument === targetPrice.instrument
+                ),
+                positions.find(
+                  (position) => priceObj.instrument === position.instrument
+                )
+              )
+            )
+            .filter((priceObj) => priceObj.targetPrice)
+            .map((priceObj) => {
+              const spread = priceObj.closeoutAsk - priceObj.closeoutBid;
+              const midPrice = Number(priceObj.closeoutBid) + spread / 2;
+              const diff = priceObj.targetPrice - midPrice;
+              const currentPosSize = priceObj.long
+                ? Number(priceObj.long.units) + Number(priceObj.short.units)
+                : 0;
+              const targetPosSize = (diff * 100000).toFixed(0);
+              const units = targetPosSize - currentPosSize;
+              executeOrder(createMarketOrderObj(priceObj.instrument, units));
+              return {
+                ...priceObj,
+                spread,
+                midPrice,
+                diff,
+                currentPosSize,
+                targetPosSize,
+              };
+            });
+
+          console.log(mergedPrices);
+        })
+        .catch((err) => console.log(err));
+    })
     .catch((err) => console.log(err));
 };
 
@@ -107,7 +163,8 @@ const funcs = {
   getOandaOrders,
   getOandaTrades,
   getPositions,
-  getPrice: () => getPrice(instruments),
+  getPrices: () => getPrices(instruments),
+  trackingSystem: () => trackingSystem(instruments),
   updateDefaultAccountId: () => updateDefaultAccountId(accountId),
 };
 
