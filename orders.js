@@ -1,11 +1,16 @@
 import axios from "axios";
-import { getOrdersToExecute, getDefaultAccountId, getBaseUrl, getHeaders } from "./db.js";
+import {
+  getOrdersToExecute,
+  getDefaultAccountId,
+  getBaseUrl,
+  getHeaders,
+} from "./db.js";
 
 const accountId = getDefaultAccountId();
 const url = getBaseUrl();
 const headers = getHeaders();
 
-const createMarketOrderObj = (instrument = "EUR_USD", units = 0) => {
+export const createMarketOrderObj = (instrument = "EUR_USD", units = 0) => {
   return {
     order: {
       units,
