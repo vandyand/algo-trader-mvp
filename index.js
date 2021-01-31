@@ -20,10 +20,9 @@ var argv = yargs(process.argv.slice(2))
   .alias("f", "function")
   .alias("a", "account-id")
   .alias("i", "instruments")
-  .alias("u", "units")
-  .demandOption(["f"]).argv;
+  .alias("u", "units").argv;
 
-const func = argv.f;
+const func = argv.f || "getAccountIds";
 const accountId = argv.a || getDefaultAccountId();
 const instruments = argv.i || null;
 
